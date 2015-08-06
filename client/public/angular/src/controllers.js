@@ -3,11 +3,12 @@
     
     app.controller('IndexController', ['$location', 'api', function($location, api) {  
        
-        var model = this;        
+        var model = this;      
+        model.data = undefined;
         
         model.callApi = function() {
-            api.call(function(data) {
-                model.students = data;
+            api.call(function(date) {
+                model.data = date;
             });
         };        
         
@@ -17,7 +18,7 @@
 (function() {
     var app = angular.module('app');
     
-    app.controller('LoginController', ['$location', '$http', function($location, $http) {  
+    app.controller('LoginController', ['$location', 'api', function($location, api) {  
        
         var model = this;
         model.username = '';
@@ -25,7 +26,10 @@
         
         
         model.login = function() {
-            
+            api.login({ username: model.username, password: model.password }, function(token) {
+                window.localStorage.setItem('token', token);
+                $location.path('/');
+            });
         };        
         
     }]);

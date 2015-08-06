@@ -8,53 +8,42 @@
         }
         
         Api.prototype.error = function(data, status, headers, config, statusText) {
+            if (status >= 400 && status < 500){
+                $location.path('/login');
+            }
             console.error('%s %s %s', config.method, config.url, status);
         }
         
-        Api.prototype.getAll = function(success) {
+        Api.prototype.call = function(success) {
             var api = this;
-            var promise = $http.get(api.url);
+            var promise = $http.get(api.url + "date");
             promise.success(success);
             promise.error(api.error);
         }
-        
-        Api.prototype.getOne = function(id, success) {         
-            var api = this;
-            var promise = $http.get(api.url + id);
-            promise.success(success);
-            promise.error(api.error);
-        }
-        
-        Api.prototype.delete = function(id, success) {
+                        
+        Api.prototype.login = function(model, success) {           
             var api = this;
             $http({
-                url: api.url + id,
-                method: "DELETE",
-            }).success(success).error(api.error);
-        }
-        
-        Api.prototype.save = function(model, success) {           
-            var api = this;
-            $http({
-                url: api.url,
+                url: api.url + "login",
                 method: "POST",
                 data: model,
             }).success(success).error(api.error);
         }
-        
-        Api.prototype.update = function(model, success) {  
-            var api = this;
-            $http({
-                url: api.url,
-                method: "PUT",
-                data: model,
-            }).success(success).error(api.error);
-        }
-        
+                        
         return function(url) { 
             return new Api(url);
         }
         
+    }]);
+    
+})();
+
+(function() {
+    var app = angular.module("app");
+    
+    app.factory("api", ['apiFactory', function(apiFactory) {   
+        var api = apiFactory('http://localhost:3000/api/');
+        return api;
     }]);
     
 })();
