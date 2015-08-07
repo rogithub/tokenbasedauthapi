@@ -23,7 +23,7 @@ router.post('/login', function(req, res, next) {
         return res.sendStatus(401);
     }
 
-    var expires = moment().add(7, 'days').valueOf();
+    var expires = moment().add(1, 'minutes').valueOf();
     var token = jwt.encode({
         iss: user.id,
         exp: expires
