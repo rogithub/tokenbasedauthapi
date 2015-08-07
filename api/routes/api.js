@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var jwt = require('jwt-simple');
 var db = require('./../database/db.js');
+var moment = require('moment');
+
 
 var tokenVerification = require('./../middlewares/tokenVerification.js');
 
@@ -9,28 +11,28 @@ var tokenVerification = require('./../middlewares/tokenVerification.js');
 /* GET home page. */
 router.post('/login', function(req, res, next) {
     
-    var user =  db.find(req.body.id);  
-
+    var user =  db.find(parseInt(req.body.id, 10));  
+    
     if (!user) {
         // incorrect username
-        return res.send(401);
+        return res.sendStatus(401);
     }
 
     if (!user.password === req.body.password) {
         // incorrect password
-        return res.send(401);
+        return res.sendStatus(401);
     }
 
-    var expires = moment().add('days', 7).valueOf();
+    var expires = moment().add(7, 'days').valueOf();
     var token = jwt.encode({
         iss: user.id,
         exp: expires
-    }, app.get('jwtTokenSecret'));
+    }, 'F7CA77BE-622C-4CA5-8540-361A3E3CE1A7');
 
     res.json({
         token : token,
         expires: expires,
-        user: user.toJSON()
+        user: user
     });
 });
 
