@@ -35,4 +35,16 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.post('/logout', function(req, res, next) {
+    //get token
+    //change expiration date
+    //return expired token
+    
+    res.json({
+        token : undefined,
+        expires: undefined,
+        username: undefined
+    });
+});
+
 module.exports = router;
