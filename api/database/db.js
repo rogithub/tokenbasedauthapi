@@ -7,6 +7,14 @@ var db = {
                 return item;
         }
         return undefined;
+    },
+    findByUserName: function(username) {        
+        for (var i = 0; i < db.users.length; i++) {
+            var item = db.users[i];
+            if (item.username === username)
+                return item;
+        }
+        return undefined;
     }
 };
 

@@ -14,14 +14,14 @@ module.exports = function(req, res, next) {
     var token = 
         (req.body && req.body.access_token) || 
         (req.query && req.query.access_token) || 
-        req.headers['x-access-token'];
+        req.headers['x-access-token'];        
     
     if (token) {
         try {
             var decoded = jwt.decode(token, 'F7CA77BE-622C-4CA5-8540-361A3E3CE1A7');
             
-            if (decoded.exp <= Date.now()) {
-                res.end('Access token has expired', 400);
+            if (decoded.exp <= Date.now()) {                
+                res.status(401).send('Access token has expired');
             }
             
             var user =  db.find(decoded.iss);
@@ -29,10 +29,10 @@ module.exports = function(req, res, next) {
             
             return next();
 
-        } catch (err) {
-            res.end('Internal token error', 500);
+        } catch (err) {                        
+            res.status(401).send('Invalid token');
         }
     } else {
-        res.end('No token', 401);
+        res.status(401).send('No token');
     }
 };

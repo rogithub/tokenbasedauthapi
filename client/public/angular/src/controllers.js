@@ -27,7 +27,7 @@
         
         model.login = function() {
             api.login({ username: model.username, password: model.password }, function(token) {
-                window.localStorage.setItem('token', token);
+                window.localStorage.setItem('token', token.token);
                 $location.path('/');
             });
         };        

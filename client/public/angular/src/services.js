@@ -1,24 +1,31 @@
 (function() {
     var app = angular.module("app");
     
-    app.factory("apiFactory", ['$http', function($http) {
-        
-        var Api = function (url){
+    app.factory("apiFactory", ['$http', '$location', function($http, $location) {
+                
+                
+        var Api = function (url) {
             this.url = url;
         }
         
+        Api.prototype.getToken = function() {
+            return window.localStorage.getItem('token');            
+        }
+        
         Api.prototype.error = function(data, status, headers, config, statusText) {
-            if (status >= 400 && status < 500){
-                $location.path('/login');
+            if (status === 401){
+                return $location.path('/login');
             }
             console.error('%s %s %s', config.method, config.url, status);
         }
         
-        Api.prototype.call = function(success) {
+        Api.prototype.call = function(success) {            
             var api = this;
-            var promise = $http.get(api.url + "date");
-            promise.success(success);
-            promise.error(api.error);
+            $http({
+                url: api.url + "date",
+                method: "GET",
+                headers: { 'x-access-token': api.getToken() },
+            }).success(success).error(api.error);
         }
                         
         Api.prototype.login = function(model, success) {           
@@ -42,7 +49,7 @@
     var app = angular.module("app");
     
     app.factory("api", ['apiFactory', function(apiFactory) {   
-        var api = apiFactory('http://localhost:3000/api/');
+        var api = apiFactory('http://localhost:3001/api/');
         return api;
     }]);
     

@@ -1,0 +1,14 @@
+<h1>API call</h1>
+
+<div ng-controller="IndexController as ctrl">
+    <div>
+        <p>
+            You are supposed to be logged in to see this page.
+            From here you cann call the API by pressing button.
+        </p>
+        <p>
+            date: {{ctrl.data}}            
+        </p>
+        <input type="button" value="call API" ng-click="ctrl.callApi()"/>
+    </div>
+</div>

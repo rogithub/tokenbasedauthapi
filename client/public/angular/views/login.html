@@ -1,0 +1,9 @@
+<h1>login page</h1>
+
+<form name="loginForm" ng-submit="loginForm.$valid && ctrl.login()" 
+                     ng-controller="LoginController as ctrl" novalidate>
+    
+    username: <input type="text" ng-model="ctrl.username" required />
+    password: <input type="password" ng-model="ctrl.password" required />
+    <input type="submit" id="submit" value="login" />
+</form>
