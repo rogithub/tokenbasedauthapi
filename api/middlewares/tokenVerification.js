@@ -21,7 +21,7 @@ module.exports = function(req, res, next) {
             var decoded = jwt.decode(token, 'F7CA77BE-622C-4CA5-8540-361A3E3CE1A7');
             
             if (decoded.exp <= Date.now()) {                
-                res.status(401).send('Access token has expired');
+                return res.status(401).send('Access token has expired');
             }
             
             var user =  db.find(decoded.iss);
@@ -30,9 +30,9 @@ module.exports = function(req, res, next) {
             return next();
 
         } catch (err) {                        
-            res.status(401).send('Invalid token');
+            return res.status(401).send('Invalid token');
         }
     } else {
-        res.status(401).send('No token');
+        return res.status(401).send('No token');
     }
 };

@@ -1,46 +1,13 @@
 (function() {
     var app = angular.module("app");
     
-    app.factory("apiFactory", ['$http', '$location', function($http, $location) {
-                
-                
-        var Api = function (url) {
-            this.url = url;
-        }
-        
-        Api.prototype.getToken = function() {
-            return window.localStorage.getItem('token');            
-        }
-        
-        Api.prototype.error = function(data, status, headers, config, statusText) {
+    app.factory("errorHandler", ['$window', '$location', function($window, $location) {
+        return function(data, status, headers, config, statusText) {
             if (status === 401){
                 return $location.path('/login');
             }
             console.error('%s %s %s', config.method, config.url, status);
-        }
-        
-        Api.prototype.call = function(success) {            
-            var api = this;
-            $http({
-                url: api.url + "date",
-                method: "GET",
-                headers: { 'x-access-token': api.getToken() },
-            }).success(success).error(api.error);
-        }
-                        
-        Api.prototype.login = function(model, success) {           
-            var api = this;
-            $http({
-                url: api.url + "login",
-                method: "POST",
-                data: model,
-            }).success(success).error(api.error);
-        }
-                        
-        return function(url) { 
-            return new Api(url);
-        }
-        
+        };
     }]);
     
 })();
@@ -48,9 +15,33 @@
 (function() {
     var app = angular.module("app");
     
-    app.factory("api", ['apiFactory', function(apiFactory) {   
-        var api = apiFactory('http://localhost:3001/api/');
-        return api;
+    app.factory("tokenStorage", ['$window', function($window) {        
+        return {        
+            getToken: function() {
+                var json = $window.localStorage.getItem('token');            
+                if (json) return JSON.parse(json);
+
+                return undefined;
+            },
+
+            setToken: function (data) {
+                $window.localStorage.setItem('token', JSON.stringify(data));
+            },
+
+            clearToken: function () {
+                $window.localStorage.setItem('token', '');
+            },
+
+            getAccessHeader: function() {
+                var that = this;
+                var token = that.getToken();
+                if (token) {
+                    return token.token;
+                }
+                return '';
+            }
+        };
     }]);
     
 })();
+
