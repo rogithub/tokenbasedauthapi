@@ -23,8 +23,7 @@
             var api = this;
             $http({
                 url: api.url + "logout",
-                method: "POST",
-                headers: { 'x-access-token': tokenStorage.getAccessHeader() },
+                method: "POST"
             }).success(function() {
                 tokenStorage.clearToken();
                 success();

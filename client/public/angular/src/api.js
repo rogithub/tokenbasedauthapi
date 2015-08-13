@@ -1,8 +1,8 @@
 (function() {
     var app = angular.module("app");
     
-    app.factory("apiFactory", ['$http', '$location', 'tokenStorage', 'errorHandler', 
-                               function($http, $location, tokenStorage, errorHandler) {
+    app.factory("apiFactory", ['$http', '$location', 'errorHandler', 
+                               function($http, $location, errorHandler) {
                         
         var Api = function (url) {
             this.url = url;            
@@ -12,8 +12,7 @@
             var api = this;
             $http({
                 url: api.url + "date",
-                method: "GET",
-                headers: { 'x-access-token': tokenStorage.getAccessHeader() },
+                method: "GET"
             }).success(success).error(errorHandler);
         };                               
                         

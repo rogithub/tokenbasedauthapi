@@ -8,7 +8,7 @@
         return {
             
             // optional method
-            'request': function(config) {    
+            'request': function(request) {    
             
                 // if is not listed in the freeAccessPages array
                 if (freeAccesPages.indexOf($location.path()) === -1) {
@@ -18,7 +18,10 @@
                         $location.url('/login');
                 }
                 
-                return config;
+                //set 'x-access-token' header
+                request.headers['x-access-token'] = tokenStorage.getAccessHeader();
+                
+                return request;
             },
 
             // optional method
