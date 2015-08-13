@@ -1,16 +1,4 @@
-(function() {
-    var app = angular.module("app");
-    
-    app.factory("errorHandler", ['$window', '$location', function($window, $location) {
-        return function(data, status, headers, config, statusText) {
-            if (status === 401){
-                return $location.path('/login');
-            }
-            console.error('%s %s %s', config.method, config.url, status);
-        };
-    }]);
-    
-})();
+
 
 (function() {
     var app = angular.module("app");

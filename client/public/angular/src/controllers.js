@@ -6,6 +6,7 @@
        
         var model = this;      
         model.data = undefined;
+        
         model.username = tokenStorage.getToken().username;
         
         model.callApi = function() {
