@@ -15,7 +15,7 @@
                     var tokenObj = tokenStorage.getToken();
 
                     if (tokenObj === undefined)
-                        $location.url('/login');
+                        $location.path('/login');
                 }
                 
                 //set 'x-access-token' header
@@ -38,7 +38,7 @@
             // optional method
             'responseError': function(rejection) {
                 if (rejection.status === 401) {
-                    $location.url('/login');
+                    $location.path('/login');
                 }
                 
                 return $q.reject(rejection);
